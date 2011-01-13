@@ -1,7 +1,45 @@
 = bookscan
 
-Description goes here.
+This is a scraper of BookScan (http://www.bookscan.co.jp/) Service.This is *NOT* a official software of BookScan.
 
+== Install
+
+ sudo gem install bookscan
+ 
+== Usage
+
+ bookscan [options] command [command options]
+
+=== Options
+
+ * --user-email=<email address>
+ * --user-password=<password>
+ * --strage-path=<path>
+ * --tune-type=<ipad|iphone|...>
+ 
+=== Commands
+
+ * download <object>
+ * tune --type=<type> <object>
+ * tune-download
+ * config var value
+
+=== Objects
+
+ * <hash>
+ * "notexist"
+ * "tuned"
+ * "all"
+
+ 
+=== Configurations
+
+ * user.email
+ * user.password
+ * strage.path
+ * tune.type
+
+ 
 == Contributing to bookscan
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet

@@ -8,37 +8,46 @@ This is a scraper of BookScan (http://www.bookscan.co.jp/) Service.This is *NOT*
  
 == Usage
 
- bookscan [options] command [command options]
+ bookscan [global options] command [command options]
 
-=== Options
+=== GlobalOptions
 
- * --user-email=<email address>
- * --user-password=<password>
- * --strage-path=<path>
- * --tune-type=<ipad|iphone|...>
+* --user-email=<email address>
+* --user-password=<password>
+* --storage-path=<path>
+* --tune-type=<ipad|iphone|...>
  
 === Commands
 
- * download <object>
- * tune --type=<type> <object>
- * tune-download
- * config var value
+* download <object> [--storage-path=<path>] 
+* tune --type=<type> <object>
+* tune-download
+* config var value
 
 === Objects
 
- * <hash>
- * "notexist"
- * "tuned"
- * "all"
+* hash
+* "notexist"
+* "tuned"
+* "all"
 
  
 === Configurations
 
- * user.email
- * user.password
- * strage.path
- * tune.type
+* user.email
+* user.password
+* strage.path
+* tune.type
 
+
+== Depends
+
+=== gems
+
+* highline > 1.6
+* mechanize > 1.0
+* keystorage > 0.1
+ 
  
 == Contributing to bookscan
  

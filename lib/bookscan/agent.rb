@@ -121,8 +121,13 @@ module Bookscan
       end
       books
     end
-    
-    def download isbn,type,dir
+
+    def download(url,path)
+      get(url)
+      page.save(path)
+    end
+
+    def download2 isbn,type,dir
       getr("/tunelablist.php")
       page.search("a[@class=download]").each do |a|
         if /^#{type}_.*_#{isbn}.*\.pdf$/ =~ a.text

@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
-require 'pstore'
-
 require "rubygems"
 require "highline/import"
 
@@ -9,6 +7,7 @@ $:.unshift('/Users/tumf/projects/keystorage/lib')
 require "keystorage"
 
 require "bookscan/agent"
+require "bookscan/cache"
 
 module Bookscan
   class Commands
@@ -17,7 +16,9 @@ module Bookscan
       @command_options = cmd_options
       @agent = Agent.new
       @cache_file =  ENV['HOME']+"/.bookscan.cache"
+      @cache = Cache.new(@cache_file)
     end
+
     def login
       email = ask('Enter email: ') do |q|
         q.validate = /\w+/
@@ -71,43 +72,41 @@ module Bookscan
       opt.on('-g HASH','--group=HASH', 'update group') do |v|
         hash = v
       end
-      opt.parse(@command_options)
-      PStore.new(@cache_file).transaction do |cache|
-        gs = @agent.groups
-        if all
-          gs.each_index do |index|
-            gs[index].books = @agent.books(gs[index])
-          end
-        elsif hash
-          i = gs.to_index(hash)
-          gs[i].books = @agent.books(gs[i]) if gs[i]
+      opt.parse!(@command_options)
+
+      gs = @agent.groups
+      if all
+        gs.each_index do |index|
+          gs[index].books = @agent.books(gs[index])
         end
+      elsif hash
+        i = gs.to_index(hash)
+        gs[i].books = @agent.books(gs[i]) if gs[i]
+      else
+        gs.each_index do |index|
+          gs[index].books = @cache.books(gs[index])
+        end
+      end
+      @cache.transaction do |cache|
         cache["groups"] = gs
       end
+
     end
 
     def groups
-      gs = nil
-      PStore.new(@cache_file).transaction do |ps|
-        gs = ps["groups"]
-      end
-      raise "No groups in cache do 'bookscan update' first." unless gs
+      gs = @cache.groups
       puts gs.to_s
     end
 
     def list
-      gs = nil
-      PStore.new(@cache_file).transaction do |ps|
-        gs = ps["groups"]
-      end
-      raise "No groups in cache do 'bookscan update' first." unless gs
+      gs = @cache.groups
 
       opt = OptionParser.new
       hash = nil
       opt.on('-g HASH','--group=HASH', 'group hash') do |v|
         hash = v
       end
-      opt.parse(@command_options)
+      opt.parse!(@command_options)
 
       unless hash
         puts gs.to_s
@@ -119,7 +118,55 @@ module Bookscan
 
       g = gs.by_hash(hash)
       puts g.books.to_s
+    end
+
+    def download
+      opt = OptionParser.new
+      directory = "."
+      hash = nil
+      opt.on('-d DIR','--directory=DIR', 'download directory') do |v|
+        directory = v
+      end
+      opt.on('-g HASH','--group=HASH', 'group hash') do |v|
+        hash = v
+      end
+      opt.parse!(@command_options)
+      book_id = @command_options.shift
+
+      gs = @cache.groups
+      unless book_id
+        unless hash
+          puts gs.to_s
+          hash = ask('Enter hash: ',gs.hashes) do |q|
+            q.validate = /\w+/
+            q.readline = true
+          end
+          g = gs.by_hash(hash)
+
+          puts g.books.to_s
+
+          book_id = ask('Enter book id: ',g.books.ids) do |q|
+            q.validate = /\w+/
+            q.readline = true
+          end
+
+        end
+      end
+      book = gs.book(book_id)
+      # download
+      start
+      path = directory + "/" +book.filename
+      puts "download: " + path
+      @agent.download(book.url,path)
+    end
+
+    def tune
+      
+    end
+
+    def tuned
 
     end
+
   end
 end

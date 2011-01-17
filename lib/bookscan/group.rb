@@ -11,7 +11,12 @@ module Bookscan
     end
 
     def to_a
-      [@hash,@date,@num,@price,@payment]
+      if completed?
+        @status = "完了"
+      else
+        @status = "未完了"
+      end
+      [@hash,@date,@num,@price,@payment,@status]
     end
 
     def url
@@ -32,6 +37,15 @@ module Bookscan
       @num = a[1]
       @price =  a[2]
       @payment = a[3]
+      @is_completed = true
+      if a[6] == "未完了"
+        @is_completed = false
+      end
     end
+    
+    def completed?
+      @is_completed
+    end
+
   end
 end

@@ -13,10 +13,19 @@ module Bookscan
       end
       
       each do |id,b|
-         table << [b.id,b.title]
+        table << [id,b.title]
       end
-      table.to_s
+      table.to_s if length > 0
     end
+
+    def ids
+      a = Array.new
+      each do |id,b|
+        a << b.id
+      end
+      a
+    end
+
   end
 
   class Book
@@ -26,13 +35,22 @@ module Bookscan
       @title
     end
 
+    def filename
+      return @title if isbn
+      if /(.*)\.pdf$/ =~ @title
+        return $1 + "_" + id + ".pdf"
+      end
+      raise "Can't make filename"
+    end
+
     def isbn
       return $1 if /_([0-9a-zA-Z]+)_s\.pdf$/ =~ @title
       return $1 if /_([0-9a-zA-Z]+)\.pdf$/ =~ @title
     end
+
     def id
       return isbn if isbn
-      Digest::MD5.hexdigest(title).to_s[1,10]
+      Digest::MD5.hexdigest(@title).to_s[1,10]
     end
   end
 end

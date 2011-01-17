@@ -31,12 +31,20 @@ module Bookscan
         column
         column
         column
+        column
       end
       # table << ["#","Date","num","price","status"]
       each do |group|
          table << group.to_a
       end
-      table.to_s
+      table.to_s if length > 0
     end
+
+    def book(book_id)
+      each do |g|
+        return g.books[book_id] if g.books.has_key?(book_id)
+      end
+    end
+
   end
 end

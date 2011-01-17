@@ -14,6 +14,14 @@ module Bookscan
       gs
     end
 
+    def tuned
+      ts = nil
+      transaction do |ps|
+        ts = ps["tuned"]
+      end
+      ts
+    end
+
     def books(group)
       groups.each do |g|
         return g.books if g.hash == group.hash

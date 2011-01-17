@@ -4,6 +4,7 @@ require 'digest/md5'
 require 'rubygems'
 require 'mutter'
 
+require 'bookscan'
 module Bookscan
   class Books < Array
     def to_s
@@ -62,8 +63,14 @@ module Bookscan
 
     def id
       return isbn if isbn
-      Digest::MD5.hexdigest(@title).to_s[1,10]
+      title = @title
+      if TUNED_PATTERN =~ title
+        title = $3
+      end
+      title.gsub!(/_s\.pdf$/,".pdf")
+      Digest::MD5.hexdigest(title).to_s[1,10]
     end
 
   end
 end
+

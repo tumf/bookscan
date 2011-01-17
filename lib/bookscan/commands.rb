@@ -87,10 +87,12 @@ module Bookscan
           gs[index].books = @cache.books(gs[index])
         end
       end
+      ts  = @agent.tuned
+
       @cache.transaction do |cache|
         cache["groups"] = gs
+        cache["tuned"] = ts
       end
-
     end
 
     def groups
@@ -193,10 +195,7 @@ module Bookscan
     end
 
     def tuned
-      start
-      books = @agent.tuned
-      puts books.to_s
-
+      puts @cache.tuned.to_s
     end
 
   end

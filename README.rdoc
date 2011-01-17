@@ -1,6 +1,6 @@
 = bookscan
 
-This is a scraper of BookScan (http://www.bookscan.co.jp/) Service.This is *NOT* a official software of BookScan.
+This is a scraper of Bookscan (http://www.bookscan.co.jp/) Service.This is *NOT* a official software of Bookscan.
 
 == Install
 
@@ -11,34 +11,15 @@ This is a scraper of BookScan (http://www.bookscan.co.jp/) Service.This is *NOT*
  bookscan [global options] command [command options]
 
 === GlobalOptions
-
-* --user-email=<email address>
-* --user-password=<password>
-* --storage-path=<path>
-* --tune-type=<ipad|iphone|...>
  
 === Commands
 
-* download <object> [--storage-path=<path>] 
-* tune --type=<type> <object>
-* tune-download
-* config var value
-
-=== Objects
-
-* hash
-* "notexist"
-* "tuned"
-* "all"
-
- 
-=== Configurations
-
-* user.email
-* user.password
-* strage.path
-* tune.type
-
+* help [command]
+* download [--storage-path=<path>] [id]
+* tune --type=<type> [id]
+* list
+* tuned
+* groups
 
 == Depends
 

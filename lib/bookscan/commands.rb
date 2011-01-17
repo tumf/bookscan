@@ -122,6 +122,21 @@ module Bookscan
       puts g.books.to_s
     end
 
+    def ask_tuned_book_id(book_id,type)
+      ts = @cache.tuned
+      ts.collect! do |i|
+        i if i.tune_type == type
+      end.compact!
+      raise "No tuned in cache. Exceute 'bookscan update' first." unless ts.length > 0
+      puts ts.to_s
+        
+      book_id = ask('Enter book id: ',ts.ids) do |q|
+        q.validate = /\w+/
+        q.readline = true
+      end
+      ts.by_id(book_id)
+    end
+
     def ask_book_id(book_id,hash)
       gs = @cache.groups
       unless book_id
@@ -149,15 +164,24 @@ module Bookscan
       opt = OptionParser.new
       directory = "."
       hash = nil
+      type = nil
       opt.on('-d DIR','--directory=DIR', 'download directory') do |v|
         directory = v
       end
       opt.on('-g HASH','--group=HASH', 'group hash') do |v|
         hash = v
       end
+      opt.on('-t TYPE','--tuned=TYPE', 'download tuned') do |v|
+        type = v
+      end
       opt.parse!(@command_options)
       book_id = @command_options.shift
-      book = ask_book_id(book_id,hash)
+      if type
+        book = ask_tuned_book_id(book_id,type)
+      else
+        book = ask_book_id(book_id,hash)
+      end
+
       # download
       start
       path = directory + "/" +book.filename

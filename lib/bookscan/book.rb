@@ -56,6 +56,13 @@ module Bookscan
       raise "Can't make filename"
     end
 
+    def tune_type
+      if TUNED_PATTERN =~ title
+        return $2
+      end
+      nil
+    end
+
     def isbn
       return $1 if /_([0-9a-zA-Z]+)_s\.pdf$/ =~ @title
       return $1 if /_([0-9a-zA-Z]+)\.pdf$/ =~ @title

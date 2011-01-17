@@ -1,2 +1,5 @@
 #!/usr/bin/env ruby
-require __FILE__ + '.rb'
+# vim:set fileencoding=utf-8:
+$:.unshift(File.dirname(__FILE__) + '/../lib')
+require 'bookscan/cli'
+Bookscan::CLI::run(ARGV)

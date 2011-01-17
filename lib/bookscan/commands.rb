@@ -3,7 +3,6 @@
 require "rubygems"
 require "highline/import"
 
-$:.unshift('/Users/tumf/projects/keystorage/lib')
 require "keystorage"
 
 require "bookscan/agent"

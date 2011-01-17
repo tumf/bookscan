@@ -9,6 +9,7 @@ require "bookscan/agent"
 require "bookscan/cache"
 
 module Bookscan
+  TUNE_TYPES = ["ipad","iphone","kindle3","kindledx","android","sonyreader","nook","jpg"]
   class Commands
     def initialize(cmd_options,options)
       @options = options
@@ -119,19 +120,7 @@ module Bookscan
       puts g.books.to_s
     end
 
-    def download
-      opt = OptionParser.new
-      directory = "."
-      hash = nil
-      opt.on('-d DIR','--directory=DIR', 'download directory') do |v|
-        directory = v
-      end
-      opt.on('-g HASH','--group=HASH', 'group hash') do |v|
-        hash = v
-      end
-      opt.parse!(@command_options)
-      book_id = @command_options.shift
-
+    def ask_book_id(book_id,hash)
       gs = @cache.groups
       unless book_id
         unless hash
@@ -151,7 +140,22 @@ module Bookscan
 
         end
       end
-      book = gs.book(book_id)
+      gs.book(book_id)
+    end
+
+    def download
+      opt = OptionParser.new
+      directory = "."
+      hash = nil
+      opt.on('-d DIR','--directory=DIR', 'download directory') do |v|
+        directory = v
+      end
+      opt.on('-g HASH','--group=HASH', 'group hash') do |v|
+        hash = v
+      end
+      opt.parse!(@command_options)
+      book_id = @command_options.shift
+      book = ask_book_id(book_id,hash)
       # download
       start
       path = directory + "/" +book.filename
@@ -160,6 +164,25 @@ module Bookscan
     end
 
     def tune
+      opt = OptionParser.new
+      hash = nil
+      opt.on('-g HASH','--group=HASH', 'group hash') do |v|
+        hash = v
+      end
+      opt.parse!(@command_options)
+      book_id = @command_options.shift
+      type =  @command_options.shift
+      book = ask_book_id(book_id,hash)
+      unless type
+        type = ask('Enter tune type: ',TUNE_TYPES) do |q|
+          q.validate = /\w+/
+          q.readline = true
+        end
+      end
+
+      # tune
+      start
+      @agent.tune(book,type)
       
     end
 

@@ -99,7 +99,7 @@ module Bookscan
         book = Book.new
         book.title = u.text.to_s
         book.url = u.attributes["href"].value.to_s
-        # book.group_url = url
+        book.group_url = group.url
         bs[book.id] = book
       end
       bs

@@ -29,7 +29,7 @@ module Bookscan
   end
 
   class Book
-    attr_accessor :url,:title
+    attr_accessor :url,:title,:group_url
 
     def to_s
       @title
@@ -52,5 +52,6 @@ module Bookscan
       return isbn if isbn
       Digest::MD5.hexdigest(@title).to_s[1,10]
     end
+
   end
 end

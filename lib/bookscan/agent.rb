@@ -2,13 +2,12 @@
 require "rubygems"
 require "mechanize"
 
+require "bookscan"
 require "bookscan/groups"
 require "bookscan/book"
 
 module Bookscan
   class Agent < Mechanize
-    BSURL = "http://system.bookscan.co.jp"
-    TUNED_PATTERN = /((iphone|ipad)_[^>%]*\.pdf)/
     def initialize
       super
       max_history = 0
@@ -36,17 +35,33 @@ module Bookscan
     end
 
     def tuned
+      bs = Books.new
       getr("/tunelablist.php")
-      page.search("td").to_s.scan(TUNED_PATTERN).collect do |i|
-        Bookscan.isbn i[0]
+      page.search("td").each do |td|
+        if TUNED_PATTERN =~ td.to_s
+          a = td.at("a") 
+          book = Book.new
+          book.title = $1
+          book.url = a.attributes["href"].value.to_s
+          book.group_url = "/tunelablist.php"
+          bs[book.id] = book
+        end
       end
+      bs
     end
 
     def tuning
+      bs = Books.new
       getr("/tunelabnowlist.php")
-      page.search("td").to_s.scan(TUNED_PATTERN).collect do |i|
-        Bookscan.isbn i[0]
+      page.search("td").each do |td|
+        if TUNED_PATTERN =~ td.to_s
+          book = Book.new
+          book.title = $1
+          book.group_url = "/tunelabnowlist.php"
+          bs[book.id] = book
+        end
       end
+      bs
     end
 
     def tune book,type

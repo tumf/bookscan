@@ -5,11 +5,11 @@ require "highline/import"
 
 require "keystorage"
 
+require "bookscan"
 require "bookscan/agent"
 require "bookscan/cache"
 
 module Bookscan
-  TUNE_TYPES = ["ipad","iphone","kindle3","kindledx","android","sonyreader","nook","jpg"]
   class Commands
     def initialize(cmd_options,options)
       @options = options
@@ -182,11 +182,20 @@ module Bookscan
 
       # tune
       start
+      @agent.tuning
       @agent.tune(book,type)
-      
+    end
+
+    def tuning
+      start
+      books = @agent.tuning
+      puts books.to_s
     end
 
     def tuned
+      start
+      books = @agent.tuned
+      puts books.to_s
 
     end
 

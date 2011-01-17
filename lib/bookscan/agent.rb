@@ -3,6 +3,7 @@ require "rubygems"
 require "mechanize"
 
 require "bookscan/groups"
+require "bookscan/book"
 
 module Bookscan
   class Agent < Mechanize
@@ -89,7 +90,22 @@ module Bookscan
       urls
     end
 
-    def books
+    def books group
+      bs = Books.new
+      getr(group.url)
+      page.search("a[@class=downloading]").each do |u|
+        next if u.text == "PDFダウンロード" or 
+          u.text == "変換"
+        book = Book.new
+        book.title = u.text.to_s
+        book.url = u.attributes["href"].value.to_s
+        # book.group_url = url
+        bs[book.id] = book
+      end
+      bs
+    end
+
+    def allbooks
       books = Books.new
       group_urls.each do |url|
         getr(url)

@@ -62,6 +62,8 @@ module Bookscan
     def update
       start
       all = false
+      hash = false
+
       opt = OptionParser.new
       opt.on('-a','--all', 'update all cache') do
         all = true
@@ -71,7 +73,16 @@ module Bookscan
       end
       opt.parse(@command_options)
       PStore.new(@cache_file).transaction do |cache|
-        cache["groups"] = @agent.groups
+        gs = @agent.groups
+        if all
+          gs.each_index do |index|
+            gs[index].books = @agent.books(gs[index])
+          end
+        elsif hash
+          i = gs.to_index(hash)
+          gs[i].books = @agent.books(gs[i]) if gs[i]
+        end
+        cache["groups"] = gs
       end
     end
 
@@ -99,15 +110,16 @@ module Bookscan
       opt.parse(@command_options)
 
       unless hash
-        puts ps["groups"].to_s
-        hash = ask('Enter hash: ',ps["groups"].hashes) do |q|
+        puts gs.to_s
+        hash = ask('Enter hash: ',gs.hashes) do |q|
           q.validate = /\w+/
           q.readline = true
         end
       end
 
-      @agent.logout
+      g = gs.by_hash(hash)
+      puts g.books.to_s
+
     end
-    
   end
 end

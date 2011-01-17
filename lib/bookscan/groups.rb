@@ -13,6 +13,17 @@ module Bookscan
       h
     end
 
+    def by_hash(hash)
+      i = to_index(hash)
+      at(i) if i
+    end
+
+    def to_index(hash)
+      each_index do |i|
+        return i if hash == at(i).hash
+      end
+    end
+
     def to_s
       table = Mutter::Table.new(:delimiter => '|') do
         column :style => :green
@@ -23,7 +34,7 @@ module Bookscan
       end
       # table << ["#","Date","num","price","status"]
       each do |group|
-        table << group.to_a
+         table << group.to_a
       end
       table.to_s
     end

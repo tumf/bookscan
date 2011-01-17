@@ -5,27 +5,39 @@ require 'rubygems'
 require 'mutter'
 
 module Bookscan
-  class Books < Hash
+  class Books < Array
     def to_s
       table = Mutter::Table.new(:delimiter => '|') do
         column :style => :green
         column :width => 60
       end
       
-      each do |id,b|
-        table << [id,b.title]
+      each do |b|
+        table << [b.id,b.title]
       end
       table.to_s if length > 0
     end
 
     def ids
       a = Array.new
-      each do |id,b|
+      each do |b|
         a << b.id
       end
       a
     end
 
+    def by_id(book_id)
+      each do |b|
+        return b if b.id == book_id
+      end
+    end
+
+    def has?(book_id)
+      each do |b|
+        return true if b.id == book_id
+      end
+      false
+    end
   end
 
   class Book

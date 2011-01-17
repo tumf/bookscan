@@ -44,7 +44,7 @@ module Bookscan
           book.title = $1
           book.url = a.attributes["href"].value.to_s
           book.group_url = "/tunelablist.php"
-          bs[book.id] = book
+          bs << book
         end
       end
       bs
@@ -58,7 +58,7 @@ module Bookscan
           book = Book.new
           book.title = $1
           book.group_url = "/tunelabnowlist.php"
-          bs[book.id] = book
+          bs << book
         end
       end
       bs
@@ -115,7 +115,7 @@ module Bookscan
         book.title = u.text.to_s
         book.url = u.attributes["href"].value.to_s
         book.group_url = group.url
-        bs[book.id] = book
+        bs << book
       end
       bs
     end

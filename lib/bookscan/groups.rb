@@ -42,7 +42,7 @@ module Bookscan
 
     def book(book_id)
       each do |g|
-        return g.books[book_id] if g.books.has_key?(book_id)
+        return g.books.by_id(book_id) if g.books.has?(book_id)
       end
     end
 

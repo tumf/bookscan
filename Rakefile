@@ -21,6 +21,7 @@ Jeweler::Tasks.new do |gem|
   gem.authors = ["Yoshihiro TAKAHARA"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
+  gem.add_runtime_dependency 'mutter'
   gem.add_runtime_dependency 'keystorage', '> 0.1'
   gem.add_runtime_dependency 'mechanize', '> 1.0.0'
   gem.add_runtime_dependency 'highline', '> 1.6'

@@ -123,16 +123,23 @@ module Bookscan
     end
 
     def ask_tuned_book_id(book_id,type)
+      unless type
+        type = ask('Enter tune type: ',TUNE_TYPES) do |q|
+          q.validate = /\w+/
+          q.readline = true
+        end
+      end
       ts = @cache.tuned
       ts.collect! do |i|
         i if i.tune_type == type
       end.compact!
       raise "No tuned in cache. Exceute 'bookscan update' first." unless ts.length > 0
-      puts ts.to_s
-        
-      book_id = ask('Enter book id: ',ts.ids) do |q|
-        q.validate = /\w+/
-        q.readline = true
+      unless book_id
+        puts ts.to_s
+        book_id = ask('Enter book id: ',ts.ids) do |q|
+          q.validate = /\w+/
+          q.readline = true
+        end
       end
       ts.by_id(book_id)
     end

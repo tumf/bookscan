@@ -1,6 +1,6 @@
 = bookscan
 
-This is a scraper of Bookscan (http://www.bookscan.co.jp/) Service.This is *NOT* a official software of Bookscan.
+This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* a official software of Bookscan.
 
 == Install
 
@@ -11,7 +11,10 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp/) Service.This is *NOT*
  bookscan [global options] command [command options]
 
 === GlobalOptions
- 
+
+* --debug
+* --help
+
 === Commands
 
 * help [command]

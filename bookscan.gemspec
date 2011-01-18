@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bookscan}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Yoshihiro TAKAHARA"]
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "bin/bookscan",
+    "bookscan.gemspec",
     "lib/bookscan.rb",
     "lib/bookscan/agent.rb",
     "lib/bookscan/book.rb",
@@ -56,7 +57,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rcov>, [">= 0"])
       s.add_runtime_dependency(%q<mutter>, [">= 0"])
       s.add_runtime_dependency(%q<keystorage>, ["> 0.1"])
-      s.add_runtime_dependency(%q<mechanize>, ["> 1.0.0"])
+      s.add_runtime_dependency(%q<mechanize>, [">= 1.0.0"])
       s.add_runtime_dependency(%q<highline>, ["> 1.6"])
     else
       s.add_dependency(%q<shoulda>, [">= 0"])
@@ -65,7 +66,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rcov>, [">= 0"])
       s.add_dependency(%q<mutter>, [">= 0"])
       s.add_dependency(%q<keystorage>, ["> 0.1"])
-      s.add_dependency(%q<mechanize>, ["> 1.0.0"])
+      s.add_dependency(%q<mechanize>, [">= 1.0.0"])
       s.add_dependency(%q<highline>, ["> 1.6"])
     end
   else
@@ -75,7 +76,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rcov>, [">= 0"])
     s.add_dependency(%q<mutter>, [">= 0"])
     s.add_dependency(%q<keystorage>, ["> 0.1"])
-    s.add_dependency(%q<mechanize>, ["> 1.0.0"])
+    s.add_dependency(%q<mechanize>, [">= 1.0.0"])
     s.add_dependency(%q<highline>, ["> 1.6"])
   end
 end

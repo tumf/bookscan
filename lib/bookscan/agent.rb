@@ -64,24 +64,35 @@ module Bookscan
       bs
     end
 
-    def tuning?(book)
-      tuning.each { |b|
-        return true if b.title == book.title
+    def tuning?(book,type)
+      @tuning = tuning unless @tuning
+      @tuning.each { |b|
+        return true if b.title == type+"_"+book.title
       }
       false
     end
 
     def tune(book,type,is_premium = true)
-      bs = tuning
+      if is_premium
+        max_queue = 10
+      else
+        max_queue = 1
+      end
+
+      @tuning = tuning unless @tuning
       # チューニングいっぱい
-      raise "tune queue is full" if bs.length >= 10
-      # チューニング中
-      return false if tuning?(book)
+      raise "tune queue is full" if @tuning.length >= max_queue
+      # チューニング
+      return false if tuning?(book,type)
       # tune
       getr(book.tune_url)
       page.forms.first["optimize_type"] = type;
       page.forms.first["cover_flg"] = "1";
-      return page.forms.first.submit
+      page.forms.first.submit
+      tuned = book.clone
+      tuned.title = type +"_"+book.title
+      @tuning << tuned
+      tuned
     end
 
     def groups

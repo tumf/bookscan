@@ -21,8 +21,8 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 * login
 * logout
 * update [-a|--all] [-g|--group=]
-* download [--storage-path=<path>] [id]
-* tune --type=<type> [id]
+* download [--dry-run] [--storage-path=<path>] [book id|all]
+* tune --type=<type> [--dry-run] [book id|all]
 * list
 * tuned
 * groups
@@ -32,7 +32,7 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 === gems
 
 * highline > 1.6
-* mechanize > 1.0
+* mechanize >= 1.0
 * keystorage > 0.1
  
  

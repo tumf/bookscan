@@ -20,11 +20,12 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 * help [command]
 * login
 * logout
-* update [-a|--all] [-g|--group=]
-* download [--dry-run] [--storage-path=<path>] [book id|all]
-* tune --type=<type> [--dry-run] [book id|all]
+* update [-a,--all] [-g,--group=HASH]
+* download [--dry-run]  [-g,--group=HASH] [-d,--directory=DIR] [-t,--tuned=TYPE] _id_|_all_
+* tune [--dry-run] _id_|_all_ _type_
 * list
 * tuned
+* tuning
 * groups
 
 == Depends

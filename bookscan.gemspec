@@ -5,13 +5,13 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bookscan}
-  s.version = "0.1.3"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Yoshihiro TAKAHARA"]
   s.date = %q{2011-01-18}
   s.default_executable = %q{bookscan}
-  s.description = %q{This is a scraper of BookScan (http://www.bookscan.co.jp/) Service.This is *NOT* a official software of BookScan.}
+  s.description = %q{This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* a official software of Bookscan.}
   s.email = %q{y.takahara@gmail.com}
   s.executables = ["bookscan"]
   s.extra_rdoc_files = [

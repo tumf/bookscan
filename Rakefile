@@ -16,7 +16,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/tumf/bookscan"
   gem.license = "MIT"
   gem.summary = %Q{BookScan Scraper}
-  gem.description = %Q{This is a scraper of BookScan (http://www.bookscan.co.jp/) Service.This is *NOT* a official software of BookScan.}
+  gem.description = %Q{This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* a official software of Bookscan.}
   gem.email = "y.takahara@gmail.com"
   gem.authors = ["Yoshihiro TAKAHARA"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,

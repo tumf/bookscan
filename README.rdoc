@@ -18,6 +18,9 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 === Commands
 
 * help [command]
+* login
+* logout
+* update [-a|--all] [-g|--group=]
 * download [--storage-path=<path>] [id]
 * tune --type=<type> [id]
 * list

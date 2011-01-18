@@ -84,7 +84,7 @@ module Bookscan
         gs[i].books = @agent.books(gs[i]) if gs[i]
       else
         gs.each_index do |index|
-          gs[index].books = @cache.books(gs[index])
+          gs[index].books = @cache.books(gs[index]) rescue {}
         end
       end
       ts  = @agent.tuned

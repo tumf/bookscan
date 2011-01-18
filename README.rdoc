@@ -21,8 +21,8 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 * login
 * logout
 * update [-a,--all] [-g,--group=HASH]
-* download [--dry-run]  [-g,--group=HASH] [-d,--directory=DIR] [-t,--tuned=TYPE] _id_|_all_
-* tune [--dry-run] _id_|_all_ _type_
+* download [--dry-run]  [-g,--group=HASH] [-d,--directory=DIR] [-t,--tuned=TYPE] _id_|all
+* tune [--dry-run] _id_|all _type_
 * list
 * tuned
 * tuning

@@ -195,6 +195,7 @@ module Bookscan
           bs = @cache.books
         end
         bs.each { |book|
+          next unless book.tune_type == type
           if Dir.glob(directory + "/**/*" + book.book_id + "*.pdf").length == 0
             path = directory + "/" +book.filename
             puts "download: " + path

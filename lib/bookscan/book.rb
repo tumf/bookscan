@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 require 'digest/md5'
+require 'uri'
 require 'rubygems'
 require 'mutter'
 
@@ -14,7 +15,7 @@ module Bookscan
       end
       
       each do |b|
-        table << [b.id,b.title]
+        table << [b.book_id,b.title]
       end
       table.to_s if length > 0
     end
@@ -22,20 +23,20 @@ module Bookscan
     def ids
       a = Array.new
       each do |b|
-        a << b.id
+        a << b.book_id
       end
       a
     end
 
     def by_id(book_id)
       each do |b|
-        return b if b.id == book_id
+        return b if b.book_id == book_id
       end
     end
 
     def has?(book_id)
       each do |b|
-        return true if b.id == book_id
+        return true if b.book_id == book_id
       end
       false
     end
@@ -43,6 +44,15 @@ module Bookscan
 
   class Book
     attr_accessor :url,:title,:group_url
+    def tune_url
+      "/bookoptimize.php?hash=%s&d=%s&filename=%s" % [hash,d,URI.encode(@title)]
+    end
+    def d
+      return $1 if /.*download.php\?d=([^&]+)/ =~ @url
+    end
+    def hash
+      return $1 if /.*bookdetail.php\?hash=(.*)/ =~ @group_url
+    end
 
     def to_s
       @title
@@ -51,7 +61,7 @@ module Bookscan
     def filename
       return @title if isbn
       if /(.*)\.pdf$/ =~ @title
-        return $1 + "_" + id + ".pdf"
+        return $1 + "_" + book_id + ".pdf"
       end
       raise "Can't make filename"
     end
@@ -68,7 +78,7 @@ module Bookscan
       return $1 if /_([0-9a-zA-Z]+)\.pdf$/ =~ @title
     end
 
-    def id
+    def book_id
       return isbn if isbn
       title = @title
       if TUNED_PATTERN =~ title

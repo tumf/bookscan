@@ -22,9 +22,21 @@ module Bookscan
       ts
     end
 
-    def books(group)
-      groups.each do |g|
-        return g.books if g.hash == group.hash
+    def tuned?(book,type)
+      tuned.has?(book.book_id) and tuned.by_id(book.book_id).tune_type == type
+    end
+
+    def books(group = nil)
+      if group
+        groups.each do |g|
+          return g.books if g.hash == group.hash
+        end
+      else
+        bs = Books.new
+        groups.each do |g|
+          bs += g.books
+        end
+        bs
       end
     end
 

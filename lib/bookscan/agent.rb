@@ -64,19 +64,24 @@ module Bookscan
       bs
     end
 
-    def tune book,type
-      getr(book.group_url)
-      page.search("a[@class=downloading]").each do |u|
-        if u.text == "変換" and
-            /_#{book.isbn}/ =~ u.attributes["href"].value.to_s
-          click(u)
-          page.forms.first["optimize_type"] = type;
-          page.forms.first["cover_flg"] = "1";
-          page.forms.first.submit
-          puts "tune %s " % [book.title]
-          return true
-        end
-      end
+    def tuning?(book)
+      tuning.each { |b|
+        return true if b.title == book.title
+      }
+      false
+    end
+
+    def tune(book,type,is_premium = true)
+      bs = tuning
+      # チューニングいっぱい
+      raise "tune queue is full" if bs.length >= 10
+      # チューニング中
+      return false if tuning?(book)
+      # tune
+      getr(book.tune_url)
+      page.forms.first["optimize_type"] = type;
+      page.forms.first["cover_flg"] = "1";
+      return page.forms.first.submit
     end
 
     def groups
@@ -131,7 +136,7 @@ module Bookscan
           book.title = u.text.to_s
           book.url = u.attributes["href"].value.to_s
           book.group_url = url
-          books[book.isbn] = book
+          books[book.book_id] = book
         end
       end
       books

@@ -172,6 +172,7 @@ module Bookscan
       directory = "."
       hash = nil
       type = nil
+      dry_run = false
       opt.on('-d DIR','--directory=DIR', 'download directory') do |v|
         directory = v
       end
@@ -181,31 +182,59 @@ module Bookscan
       opt.on('-t TYPE','--tuned=TYPE', 'download tuned') do |v|
         type = v
       end
+      opt.on('--dry-run', 'dry-run mode') do |v|
+        dry_run = true
+      end
       opt.parse!(@command_options)
       book_id = @command_options.shift
-      if type
-        book = ask_tuned_book_id(book_id,type)
+
+      if book_id == "all"
+        if type
+          bs = @cache.tuned
+        else
+          bs = @cache.books
+        end
+        bs.each { |book|
+          if Dir.glob(directory + "/**/*" + book.book_id + "*.pdf").length == 0
+            path = directory + "/" +book.filename
+            puts "download: " + path
+            unless dry_run
+              start
+              @agent.download(book.url,path)
+            end
+          end
+        }
       else
-        book = ask_book_id(book_id,hash)
+        if type
+          book = ask_tuned_book_id(book_id,type)
+        else
+          book = ask_book_id(book_id,hash)
+        end
+        
+        # download
+        path = directory + "/" +book.filename
+        puts "download: " + path
+        unless dry_run
+          start
+          @agent.download(book.url,path)
+        end
       end
 
-      # download
-      start
-      path = directory + "/" +book.filename
-      puts "download: " + path
-      @agent.download(book.url,path)
     end
 
     def tune
       opt = OptionParser.new
       hash = nil
+      dry_run = false
       opt.on('-g HASH','--group=HASH', 'group hash') do |v|
         hash = v
+      end
+      opt.on('--dry-run', 'dry-run mode') do |v|
+        dry_run = true
       end
       opt.parse!(@command_options)
       book_id = @command_options.shift
       type =  @command_options.shift
-      book = ask_book_id(book_id,hash)
       unless type
         type = ask('Enter tune type: ',TUNE_TYPES) do |q|
           q.validate = /\w+/
@@ -213,10 +242,27 @@ module Bookscan
         end
       end
 
-      # tune
-      start
-      @agent.tuning
-      @agent.tune(book,type)
+      if book_id == "all"
+        tuned = @cache.tuned
+        bs = @cache.books
+        bs.each { |book|
+          unless @cache.tuned?(book,type)
+            # tune
+            unless dry_run
+              start
+            end
+            puts "tune for %s: %s" % [type, book.title] if dry_run or @agent.tune(book,type)
+          end
+        }
+      else
+        book = ask_book_id(book_id,hash)
+        # tune
+        puts "tune for %s: %s" % [type, book.title]
+        unless dry_run
+          start
+          @agent.tune(book,type)
+        end
+      end
     end
 
     def tuning

@@ -84,7 +84,16 @@ module Bookscan
         gs[i].books = @agent.books(gs[i]) if gs[i]
       else
         gs.each_index do |index|
-          gs[index].books = @cache.books(gs[index]) rescue {}
+          books = @cache.books(gs[index]) rescue {}
+
+          if gs[index].completed?
+            if (books == nil or books.length == 0)
+              gs[index].books = @agent.books(gs[index])
+            else
+              gs[index].books = books
+            end
+          end
+
         end
       end
       ts  = @agent.tuned
@@ -105,12 +114,13 @@ module Bookscan
 
       opt = OptionParser.new
       hash = nil;type = nil;pattern = ".*"
-      opt.on('-g HASH','--group=HASH', 'group hash') { |v|  hash = v }
-      opt.on('-t TYPE','--tuned=TYPE', 'download tuned') { |v| type = v }
-      opt.on('-m PATTERN','--match=PATTERN','pattern match') { |v| pattern  = v }
+      browsing = true;
+      opt.on('-g HASH','--group=HASH', 'group hash') { |v|  hash = v; browsing = false }
+      opt.on('-t TYPE','--tuned=TYPE', 'download tuned') { |v| type = v; browsing = false }
+      opt.on('-m PATTERN','--match=PATTERN','pattern match') { |v| pattern  = v; browsing = false }
       opt.parse!(@command_options)
 
-      if hash
+      if hash or browsing
         puts ask_group(hash,gs).books.to_s
       else
         if type

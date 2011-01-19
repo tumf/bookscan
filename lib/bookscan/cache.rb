@@ -19,7 +19,14 @@ module Bookscan
       transaction do |ps|
         ts = ps["tuned"]
       end
-      ts
+      ts_uniq = Books.new
+      ts.each { |t|
+        unless ts_uniq.find { |i| i.title == t.title }
+          ts_uniq << t
+        end
+      }
+      require 'pp'
+      return ts_uniq.compact
     end
 
     def tuned?(book,type)
@@ -34,9 +41,9 @@ module Bookscan
       else
         bs = Books.new
         groups.each do |g|
-          bs += g.books
+          g.books.each { |b| bs << b }
         end
-        bs
+        return bs
       end
     end
 

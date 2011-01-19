@@ -32,6 +32,7 @@ module Bookscan
       each do |b|
         return b if b.book_id == book_id
       end
+      nil
     end
 
     def has?(book_id)

@@ -109,70 +109,13 @@ module Bookscan
         hash = v
       end
       opt.parse!(@command_options)
-
-      unless hash
-        puts gs.to_s
-        hash = ask('Enter hash: ',gs.hashes) do |q|
-          q.validate = /\w+/
-          q.readline = true
-        end
-      end
-
-      g = gs.by_hash(hash)
-      puts g.books.to_s
-    end
-
-    def ask_tuned_book_id(book_id,type)
-      unless type
-        type = ask('Enter tune type: ',TUNE_TYPES) do |q|
-          q.validate = /\w+/
-          q.readline = true
-        end
-      end
-      ts = @cache.tuned
-      ts.collect! do |i|
-        i if i.tune_type == type
-      end.compact!
-      raise "No tuned in cache. Exceute 'bookscan update' first." unless ts.length > 0
-      unless book_id
-        puts ts.to_s
-        book_id = ask('Enter book id: ',ts.ids) do |q|
-          q.validate = /\w+/
-          q.readline = true
-        end
-      end
-      ts.by_id(book_id)
-    end
-
-    def ask_book_id(book_id,hash)
-      gs = @cache.groups
-      unless book_id
-        unless hash
-          puts gs.to_s
-          hash = ask('Enter hash: ',gs.hashes) do |q|
-            q.validate = /\w+/
-            q.readline = true
-          end
-          g = gs.by_hash(hash)
-
-          puts g.books.to_s
-
-          book_id = ask('Enter book id: ',g.books.ids) do |q|
-            q.validate = /\w+/
-            q.readline = true
-          end
-
-        end
-      end
-      gs.book(book_id)
+      puts ask_group(hash,gs).books.to_s
     end
 
     def download
       opt = OptionParser.new
       directory = "."
-      hash = nil
-      type = nil
-      dry_run = false
+      hash = nil;type = nil;pattern = ".*"; dry_run = false
       opt.on('-d DIR','--directory=DIR', 'download directory') do |v|
         directory = v
       end
@@ -182,6 +125,9 @@ module Bookscan
       opt.on('-t TYPE','--tuned=TYPE', 'download tuned') do |v|
         type = v
       end
+      opt.on('-m PATTERN','--match=PATTERN','pattern match') do |v|
+        pattern  = v
+      end
       opt.on('--dry-run', 'dry-run mode') do |v|
         dry_run = true
       end
@@ -190,9 +136,13 @@ module Bookscan
 
       if book_id == "all"
         if type
-          bs = @cache.tuned
+          bs = @cache.tuned.select { |i|
+            /#{pattern}/ =~ i.title
+          }
         else
-          bs = @cache.books
+          bs = @cache.books.select { |i|
+            /#{pattern}/ =~ i.title
+          }
         end
         bs.each { |book|
           next unless book.tune_type == type
@@ -207,9 +157,9 @@ module Bookscan
         }
       else
         if type
-          book = ask_tuned_book_id(book_id,type)
+          book = ask_tuned_book_id(book_id,type,pattern)
         else
-          book = ask_book_id(book_id,hash)
+          book = ask_book_id(book_id,hash,pattern)
         end
         
         # download
@@ -225,38 +175,32 @@ module Bookscan
 
     def tune
       opt = OptionParser.new
-      hash = nil
-      dry_run = false
+      hash = nil; pattern = ".*"; dry_run = false
       opt.on('-g HASH','--group=HASH', 'group hash') do |v|
         hash = v
       end
       opt.on('--dry-run', 'dry-run mode') do |v|
         dry_run = true
       end
+      opt.on('-m PATTERN','--match=PATTERN','pattern match') do |v|
+        pattern  = v
+      end
       opt.parse!(@command_options)
       book_id = @command_options.shift
-      type =  @command_options.shift
-      unless type
-        type = ask('Enter tune type: ',TUNE_TYPES) do |q|
-          q.validate = /\w+/
-          q.readline = true
-        end
-      end
+      type = ask_tune_type(@command_options.shift)
 
       if book_id == "all"
         tuned = @cache.tuned
-        bs = @cache.books
-        bs.each { |book|
+        @cache.books.each { |book|
+          next unless /#{pattern}/ =~ book.title
           unless @cache.tuned?(book,type)
             # tune
-            unless dry_run
-              start
-            end
+            start unless dry_run
             puts "tune for %s: %s" % [type, book.title] if dry_run or @agent.tune(book,type)
           end
         }
       else
-        book = ask_book_id(book_id,hash)
+        book = ask_book_id(book_id,hash,pattern)
         # tune
         puts "tune for %s: %s" % [type, book.title]
         unless dry_run
@@ -274,6 +218,76 @@ module Bookscan
 
     def tuned
       puts @cache.tuned.to_s
+    end
+
+    private
+
+    def ask_group(hash,gs)
+      unless hash
+        puts gs.to_s
+        hash = ask('Enter hash ([q]uit): ',gs.hashes << 'q') do |q|
+          q.validate = /\w+/
+          q.readline = true
+        end
+      end
+      raise SystemExit if hash == "q"
+
+      gs.by_hash(hash)
+    end
+
+    def ask_tune_type(type)
+      unless type
+        type = ask('Enter tune type ([q]uit): ',TUNE_TYPES.clone << 'q') do |q|
+          q.validate = /\w+/
+          q.readline = true
+        end
+      end
+      raise SystemExit if type == "q"
+      type
+    end
+
+    def ask_tuned_book_id(book_id,type,pattern)
+      type = ask_tune_type(type)
+
+      ts = @cache.tuned.delete_if do |i|
+        i.tune_type != type
+      end
+
+      raise "No tuned in cache. Exceute 'bookscan update' first." unless ts.length > 0
+      return ask_book_id_pattern(book_id,ts,pattern)
+    end
+
+    def ask_book_id_pattern(book_id,books,pattern)
+      bs = books.clone.delete_if { |i|
+        !(/#{pattern}/ =~ i.title)
+      }
+      unless book_id
+        puts bs.to_s
+        book_id = ask('Enter book id ([q]uit): ',bs.ids << 'q') do |q|
+          q.validate = /\w+/
+          q.readline = true
+        end
+        raise SystemExit if book_id == "q"
+      end
+      bs.by_id(book_id)
+    end
+
+    def ask_book_id(book_id,hash,pattern)
+      unless  pattern == ".*"
+        return ask_book_id_pattern(book_id,@cache.books,pattern)
+      end
+
+      gs = @cache.groups
+      unless book_id
+        g = ask_group(hash,gs)
+        puts g.books.to_s
+        book_id = ask('Enter book id ([q]uit): ',g.books.ids << 'q') do |q|
+          q.validate = /\w+/
+          q.readline = true
+        end
+        raise SystemExit if book_id == "q"
+      end
+      gs.book(book_id)
     end
 
   end

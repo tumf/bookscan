@@ -28,8 +28,9 @@ module Bookscan
       a
     end
 
-    def by_id(book_id)
+    def by_id(book_id,type = nil)
       each do |b|
+        next if type and b.tune_type != type
         return b if b.book_id == book_id
       end
       nil

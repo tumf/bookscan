@@ -21,22 +21,12 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 * login
 * logout
 * update [-a,--all] [-g,--group=HASH]
-* download [--dry-run]  [-g,--group=HASH] [-d,--directory=DIR] [-t,--tuned=TYPE] _id_|all
-* tune [--dry-run] _id_|all _type_
-* list
-* tuned
+* download [--dry-run] [-g,--group=HASH] [-t,--tuned=TYPE] [-m,--match=PATTERN] _id_ | all
+* tune [--dry-run]  [-m,--match=PATTERN] _id_ | all _type_
+* list [-g,--group=HASH] [-t,--tuned=TYPE] [-m,--match=PATTERN]
 * tuning
 * groups
 
-== Depends
-
-=== gems
-
-* highline > 1.6
-* mechanize >= 1.0
-* keystorage > 0.1
- 
- 
 == Contributing to bookscan
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
@@ -49,6 +39,5 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 
 == Copyright
 
-Copyright (c) 2011 Yoshihiro TAKAHARA. See LICENSE.txt for
-further details.
+Copyright (c) 2011 Yoshihiro TAKAHARA. See LICENSE.txt for further details.
 

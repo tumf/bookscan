@@ -13,6 +13,7 @@ module Bookscan
     def execute(argv)
       begin
         @opt = OptionParser.new
+        @opt.on('--version', 'show version') { version;exit }
         @opt.on('--help', 'show this message') { usage;exit }
         @opt.on('--debug', 'debug mode') { @options[:debug] = true }
         cmd_argv = @opt.order!(argv)
@@ -27,6 +28,12 @@ module Bookscan
 
     def usage(e=nil)
       puts @opt
+    end
+    
+    def version
+      File.open(File.dirname(__FILE__) + '/../../VERSION',"r") { |file|
+        puts file.gets
+      }
     end
     
     class << self

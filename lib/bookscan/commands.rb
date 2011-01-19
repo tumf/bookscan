@@ -104,12 +104,22 @@ module Bookscan
       gs = @cache.groups
 
       opt = OptionParser.new
-      hash = nil
-      opt.on('-g HASH','--group=HASH', 'group hash') do |v|
-        hash = v
-      end
+      hash = nil;type = nil;pattern = ".*"
+      opt.on('-g HASH','--group=HASH', 'group hash') { |v|  hash = v }
+      opt.on('-t TYPE','--tuned=TYPE', 'download tuned') { |v| type = v }
+      opt.on('-m PATTERN','--match=PATTERN','pattern match') { |v| pattern  = v }
       opt.parse!(@command_options)
-      puts ask_group(hash,gs).books.to_s
+
+      if hash
+        puts ask_group(hash,gs).books.to_s
+      else
+        if type
+          bs = @cache.tuned.delete_if { |i| !(/#{pattern}/ =~ i.title) or i.tune_type != type }
+        else
+          bs = @cache.books.delete_if { |i| !(/#{pattern}/ =~ i.title) }
+        end
+        puts bs.to_s
+      end
     end
 
     def download

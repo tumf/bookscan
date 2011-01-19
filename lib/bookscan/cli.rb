@@ -28,6 +28,10 @@ module Bookscan
 
     def usage(e=nil)
       puts @opt
+      puts "\nCommands:\n"
+      COMMANDS.each { |c|
+        puts "    " + c
+      }
     end
     
     def version

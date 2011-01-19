@@ -10,6 +10,9 @@ require "bookscan/agent"
 require "bookscan/cache"
 
 module Bookscan
+  COMMANDS = ["list","help", "login","logout","download","tune","update",
+             "groups","tuned"]
+
   class Commands
     def initialize(cmd_options,options)
       @options = options
@@ -17,9 +20,30 @@ module Bookscan
       @agent = Agent.new
       @cache_file =  ENV['HOME']+"/.bookscan.cache"
       @cache = Cache.new(@cache_file)
+      @help = false
+      @banner = ""
+    end
+
+    def help
+      opt = OptionParser.new
+      opt.parse!(@command_options)
+      @banner = "command"
+      return opt if @help
+      @help = true
+      command = @command_options.shift
+      raise "Unknown command: " + command unless COMMANDS.include?(command)
+      opt = send(command)
+      opt.banner="Usage: bookscan [options] #{command} #{@banner}"
+      puts opt
+
     end
 
     def login
+      opt = OptionParser.new
+      opt.parse!(@command_options)
+      @banner = ""
+      return opt if @help
+
       email = ask('Enter email: ') do |q|
         q.validate = /\w+/
       end
@@ -44,24 +68,15 @@ module Bookscan
     end
 
     def logout
+      opt = OptionParser.new
+      opt.parse!(@command_options)
+      @banner = ""
+      return opt if @help
+
       Keystorage.delete("bookscan")
     end
 
-    def start
-      return true if @agent.login?
-      email =  Keystorage.list("bookscan").shift
-      if email
-        @agent.login(email,Keystorage.get("bookscan",email))
-        unless @agent.login?
-          login
-        end
-      else
-        login
-      end
-    end
-
     def update
-      start
       all = false
       hash = false
 
@@ -73,7 +88,10 @@ module Bookscan
         hash = v
       end
       opt.parse!(@command_options)
+      @banner = ""
+      return opt if @help
 
+      start
       gs = @agent.groups
       if all
         gs.each_index do |index|
@@ -105,6 +123,10 @@ module Bookscan
     end
 
     def groups
+      opt = OptionParser.new
+      opt.parse!(@command_options)
+      @banner = ""
+      return opt if @help
       gs = @cache.groups
       puts gs.to_s
     end
@@ -119,6 +141,8 @@ module Bookscan
       opt.on('-t TYPE','--tuned=TYPE', 'download tuned') { |v| type = v; browsing = false }
       opt.on('-m PATTERN','--match=PATTERN','pattern match') { |v| pattern  = v; browsing = false }
       opt.parse!(@command_options)
+      @banner = "[command options]"
+      return opt if @help
 
       if hash or browsing
         puts ask_group(hash,gs).books.to_s
@@ -152,6 +176,9 @@ module Bookscan
         dry_run = true
       end
       opt.parse!(@command_options)
+      @banner = "[command options] isbn|all"
+      return opt if @help
+
       book_id = @command_options.shift
 
       if book_id == "all"
@@ -206,6 +233,9 @@ module Bookscan
         pattern  = v
       end
       opt.parse!(@command_options)
+      @banner = "[command options] isbn|all tune_type"
+      return opt if @help
+
       book_id = @command_options.shift
       type = ask_tune_type(@command_options.shift)
 
@@ -231,16 +261,39 @@ module Bookscan
     end
 
     def tuning
+      opt = OptionParser.new
+      opt.parse!(@command_options)
+      @banner = ""
+      return opt if @help
+
       start
       books = @agent.tuning
       puts books.to_s
     end
 
     def tuned
+      opt = OptionParser.new
+      opt.parse!(@command_options)
+      @banner = ""
+      return opt if @help
       puts @cache.tuned.to_s
     end
 
     private
+
+
+    def start
+      return true if @agent.login?
+      email =  Keystorage.list("bookscan").shift
+      if email
+        @agent.login(email,Keystorage.get("bookscan",email))
+        unless @agent.login?
+          login
+        end
+      else
+        login
+      end
+    end
 
     def ask_group(hash,gs)
       unless hash

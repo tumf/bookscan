@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bookscan}
-  s.version = "0.4.3"
+  s.version = "0.4.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Yoshihiro TAKAHARA"]
-  s.date = %q{2011-01-19}
+  s.date = %q{2011-01-21}
   s.default_executable = %q{bookscan}
   s.description = %q{This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* a official software of Bookscan.}
   s.email = %q{y.takahara@gmail.com}
@@ -59,6 +59,8 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<keystorage>, ["> 0.1"])
       s.add_runtime_dependency(%q<mechanize>, [">= 1.0.0"])
       s.add_runtime_dependency(%q<highline>, ["> 1.6"])
+      s.add_runtime_dependency(%q<progressbar>, [">= 0.9.0"])
+      s.add_runtime_dependency(%q<httpclient>, [">= 2.1.6.1"])
     else
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
@@ -68,6 +70,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<keystorage>, ["> 0.1"])
       s.add_dependency(%q<mechanize>, [">= 1.0.0"])
       s.add_dependency(%q<highline>, ["> 1.6"])
+      s.add_dependency(%q<progressbar>, [">= 0.9.0"])
+      s.add_dependency(%q<httpclient>, [">= 2.1.6.1"])
     end
   else
     s.add_dependency(%q<shoulda>, [">= 0"])
@@ -78,6 +82,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<keystorage>, ["> 0.1"])
     s.add_dependency(%q<mechanize>, [">= 1.0.0"])
     s.add_dependency(%q<highline>, ["> 1.6"])
+    s.add_dependency(%q<progressbar>, [">= 0.9.0"])
+    s.add_dependency(%q<httpclient>, [">= 2.1.6.1"])
   end
 end
 

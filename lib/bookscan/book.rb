@@ -11,11 +11,11 @@ module Bookscan
     def to_s
       table = Mutter::Table.new(:delimiter => '|') do
         column :style => :green
-        column :width => 60
+        column :width => 100
       end
       
       each do |b|
-        table << [b.book_id,b.title]
+        table << [b.book_id,b.title_short]
       end
       table.to_s if length > 0
     end
@@ -57,6 +57,12 @@ module Bookscan
 
     def to_s
       @title
+    end
+
+    def title_short
+      @title.sub(/\.pdf$/,"").
+        sub(/_s$/,"").
+        sub(/_[0-9a-zA-Z]+$/,"")
     end
 
     def filename

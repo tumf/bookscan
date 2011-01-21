@@ -195,7 +195,7 @@ module Bookscan
           next unless book.tune_type == type
           if Dir.glob(directory + "/**/*" + book.book_id + "*.pdf").length == 0
             path = directory + "/" +book.filename
-            puts "download: " + path
+            puts "=> " + path
             unless dry_run
               start
               @agent.download(book.url,path)

@@ -25,6 +25,8 @@ Jeweler::Tasks.new do |gem|
   gem.add_runtime_dependency 'keystorage', '> 0.1'
   gem.add_runtime_dependency 'mechanize', '>= 1.0.0'
   gem.add_runtime_dependency 'highline', '> 1.6'
+  gem.add_runtime_dependency 'progressbar', '>= 0.9.0'
+  gem.add_runtime_dependency 'httpclient', '>= 2.1.6.1'
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new

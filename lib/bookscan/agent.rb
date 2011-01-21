@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 require "rubygems"
 require "mechanize"
+require 'httpclient'
+require 'progressbar'
 
 require "bookscan"
 require "bookscan/groups"
@@ -154,20 +156,35 @@ module Bookscan
     end
 
     def download(url,path)
-      get(url)
-      page.save(path)
-    end
-
-    def download2 isbn,type,dir
-      getr("/tunelablist.php")
-      page.search("a[@class=download]").each do |a|
-        if /^#{type}_.*_#{isbn}.*\.pdf$/ =~ a.text
-          click(a)
-          path =  dir + "/" + a.text
-          puts "Download %s" % [path]
-          page.save(path)
-        end
+      url = URI.parse(url)
+      cli = HTTPClient.new
+      @cookie_jar.cookies(url).each do |cookie|
+        cli.cookie_manager.parse(cookie.to_s,url)
       end
+
+      length = 0;total = 0
+      res = cli.head(url)
+      if res.status == 302
+        url = URI.parse(res.header["Location"].to_s)
+      end
+      total = cli.head(url).header["Content-Length"].to_s.to_i
+      t = Thread.new {
+        conn = cli.get_async(url)
+        io = conn.pop.content
+        ::File::open(path, "wb") { |f|
+          while str = io.read(40)
+            f.write str
+            length += str.length
+          end
+        }
+      }
+      pbar = ProgressBar.new("Loading",total)
+      while length >= total 
+        sleep 1
+        pbar.set(length)
+      end
+      pbar.finish
+      t.join
     end
 
   end

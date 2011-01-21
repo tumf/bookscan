@@ -179,7 +179,7 @@ module Bookscan
         }
       }
       pbar = ProgressBar.new("Loading",total)
-      while length >= total 
+      while  total > length
         sleep 1
         pbar.set(length)
       end

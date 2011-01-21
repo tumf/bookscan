@@ -240,13 +240,18 @@ module Bookscan
       type = ask_tune_type(@command_options.shift)
 
       if book_id == "all"
-        tuned = @cache.tuned
+        start unless dry_run
+        unless dry_run
+          @cache.transaction do |cache|
+            cache["tuned"] = @agent.tuned
+          end
+        end
         @cache.books.each { |book|
           next unless /#{pattern}/ =~ book.title
           unless @cache.tuned?(book,type)
             # tune
-            start unless dry_run
             puts "tune for %s: %s" % [type, book.title] if dry_run or @agent.tune(book,type)
+            # puts "tune for %s: %s" % [type, book.title]
           end
         }
       else

@@ -25,12 +25,13 @@ module Bookscan
           ts_uniq << t
         end
       }
-      require 'pp'
       return ts_uniq.compact
     end
 
     def tuned?(book,type)
-      tuned.has?(book.book_id) and tuned.by_id(book.book_id).tune_type == type
+      b = tuned.by_id(book.book_id,type)
+      return false unless b
+      b.book_id == book.book_id and b.tune_type == type 
     end
 
     def books(group = nil)

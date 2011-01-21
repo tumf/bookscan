@@ -75,15 +75,12 @@ module Bookscan
     end
 
     def tune(book,type,is_premium = true)
-      if is_premium
-        max_queue = 10
-      else
-        max_queue = 1
-      end
+      max_queue = 1
+      max_queue = 10 if is_premium
 
       @tuning = tuning unless @tuning
       # チューニングいっぱい
-      raise "tune queue is full" if @tuning.length >= max_queue
+      raise SystemExit.new(0,"tune queue is full") if @tuning.length >= max_queue
       # チューニング
       return false if tuning?(book,type)
       # tune

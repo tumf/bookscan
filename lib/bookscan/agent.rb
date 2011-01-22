@@ -161,9 +161,7 @@ module Bookscan
 
       length = 0;total = 0
       res = cli.head(url)
-      if res.status == 302
-        url = URI.parse(res.header["Location"].to_s)
-      end
+      url = URI.parse(res.header["Location"].to_s) if res.status == 302
       total = cli.head(url).header["Content-Length"].to_s.to_i
       t = Thread.new {
         conn = cli.get_async(url)

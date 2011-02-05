@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require "rubygems"
+require "uri"
 require "mechanize"
 require 'httpclient'
 require 'progressbar'
@@ -43,7 +44,7 @@ module Bookscan
         if TUNED_PATTERN =~ td.to_s
           a = td.at("a") 
           book = Book.new
-          book.title = $1
+          book.title = URI.decode($1)
           book.url = a.attributes["href"].value.to_s
           book.group_url = "/tunelablist.php"
           bs << book

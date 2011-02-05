@@ -11,7 +11,7 @@ require "bookscan/cache"
 
 module Bookscan
   COMMANDS = ["list","help", "login","logout","download","tune","update",
-             "groups","tuned"]
+             "groups","tuned","tuning"]
 
   class Commands
     def initialize(cmd_options,options)

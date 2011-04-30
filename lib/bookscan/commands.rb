@@ -222,7 +222,7 @@ module Bookscan
 
     def tune
       opt = OptionParser.new
-      hash = nil; pattern = ".*"; dry_run = false
+      hash = nil; pattern = ".*"; dry_run = false; to = nil
       opt.on('-g HASH','--group=HASH', 'group hash') do |v|
         hash = v
       end
@@ -231,6 +231,9 @@ module Bookscan
       end
       opt.on('-m PATTERN','--match=PATTERN','pattern match') do |v|
         pattern  = v
+      end
+      opt.on('--to=dest', 'file to external storage: e.g. Dropbox') do |v|
+        to = v
       end
       opt.parse!(@command_options)
       @banner = "[command options] isbn|all tune_type"
@@ -250,7 +253,7 @@ module Bookscan
           next unless /#{pattern}/ =~ book.title
           unless @cache.tuned?(book,type)
             # tune
-            puts "tune for %s: %s" % [type, book.title] if dry_run or @agent.tune(book,type)
+            puts "tune for %s: %s" % [type, book.title] if dry_run or @agent.tune(book,{:type => type, :to => to})
             # puts "tune for %s: %s" % [type, book.title]
           end
         }
@@ -260,7 +263,7 @@ module Bookscan
         puts "tune for %s: %s" % [type, book.title]
         unless dry_run
           start
-          @agent.tune(book,type)
+          @agent.tune(book,{:to => to,:type => type})
         end
       end
     end

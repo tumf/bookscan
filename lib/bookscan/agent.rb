@@ -75,7 +75,11 @@ module Bookscan
       false
     end
 
-    def tune(book,type,is_premium = true)
+#    def tune(book,type,is_premium = true)
+    def tune(book,options)
+      type = options[:type]
+      is_premium = true
+      is_premium = options[:is_premium]
       max_queue = 1
       max_queue = 10 if is_premium
 
@@ -88,6 +92,9 @@ module Bookscan
       getr(book.tune_url)
       page.forms.first["optimize_type"] = type;
       page.forms.first["cover_flg"] = "1";
+      if options[:to] == "dropbox"
+        page.forms.first["dropbox_flg"] = "1";
+      end
       page.forms.first.submit
       tuned = book.clone
       tuned.title = type +"_"+book.title

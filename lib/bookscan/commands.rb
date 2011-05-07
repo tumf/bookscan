@@ -253,7 +253,7 @@ module Bookscan
           next unless /#{pattern}/ =~ book.title
           unless @cache.tuned?(book,type)
             # tune
-            puts "tune for %s: %s" % [type, book.title] if dry_run or @agent.tune(book,{:type => type, :to => to})
+            puts "tune for %s: %s" % [type, book.title] if dry_run or @agent.tune(book,{:type => type, :to => to, :is_premium => true})
             # puts "tune for %s: %s" % [type, book.title]
           end
         }

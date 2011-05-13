@@ -5,14 +5,14 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bookscan}
-  s.version = "0.5.6"
+  s.version = "0.5.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Yoshihiro TAKAHARA"]
-  s.date = %q{2011-04-30}
+  s.authors = [%q{Yoshihiro TAKAHARA}]
+  s.date = %q{2011-05-13}
   s.description = %q{This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* a official software of Bookscan.}
   s.email = %q{y.takahara@gmail.com}
-  s.executables = ["bookscan"]
+  s.executables = [%q{bookscan}]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -37,9 +37,9 @@ Gem::Specification.new do |s|
     "test/test_bookscan.rb"
   ]
   s.homepage = %q{http://github.com/tumf/bookscan}
-  s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.7.2}
+  s.licenses = [%q{MIT}]
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.1}
   s.summary = %q{BookScan Scraper}
   s.test_files = [
     "test/helper.rb",

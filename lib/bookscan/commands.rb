@@ -249,7 +249,7 @@ module Bookscan
             cache["tuned"] = @agent.tuned
           end
         end
-        @cache.books.each { |book|
+        @cache.books(hash).each { |book|
           next unless /#{pattern}/ =~ book.title
           unless @cache.tuned?(book,type)
             # tune

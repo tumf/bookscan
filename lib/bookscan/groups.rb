@@ -15,13 +15,15 @@ module Bookscan
 
     def by_hash(hash)
       i = to_index(hash)
-      at(i) if i
+      return nil unless i
+      at(i)
     end
 
     def to_index(hash)
       each_index do |i|
         return i if hash == at(i).hash
       end
+      nil
     end
 
     def to_s

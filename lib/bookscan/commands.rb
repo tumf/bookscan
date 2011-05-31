@@ -105,7 +105,7 @@ module Bookscan
           books = @cache.books(gs[index]) rescue {}
 
           if gs[index].completed?
-            if (books == nil or books.length == 0)
+            if (books == nil or books.length == 0 or !books.is_a?(Books))
               gs[index].books = @agent.books(gs[index])
             else
               gs[index].books = books
@@ -312,7 +312,6 @@ module Bookscan
         end
       end
       raise SystemExit if hash == "q"
-
       gs.by_hash(hash)
     end
 

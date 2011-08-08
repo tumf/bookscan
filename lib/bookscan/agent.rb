@@ -163,7 +163,7 @@ module Bookscan
     def download(url,path)
       url = URI.parse(url)
       cli = HTTPClient.new
-      @cookie_jar.cookies(url).each do |cookie|
+      cookie_jar.cookies(url).each do |cookie|
         cli.cookie_manager.parse(cookie.to_s,url)
       end
 

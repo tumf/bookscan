@@ -2,6 +2,7 @@ source "http://rubygems.org"
 # Add dependencies required to use your gem here.
 # Example:
 #   gem "activesupport", ">= 2.3.5"
+gem 'rake','0.8.7'
 gem 'mutter'
 gem 'keystorage', '> 0.1'
 gem 'mechanize', '>= 2.0.1'

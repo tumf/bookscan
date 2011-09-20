@@ -39,6 +39,7 @@ module Bookscan
         groups.each do |g|
           return g.books if g.hash == group.hash
         end
+        return {}
       else
         bs = Books.new
         groups.each do |g|

@@ -37,7 +37,7 @@ module Bookscan
     def books(group = nil)
       if group
         groups.each do |g|
-          return g.books if g.hash == group.hash
+          return g.books if g.hash == group
         end
         return {}
       else

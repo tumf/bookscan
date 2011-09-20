@@ -163,13 +163,15 @@ module Bookscan
     def download(url,path)
       url = URI.parse(url)
       cli = HTTPClient.new
-      @cookie_jar.cookies(url).each do |cookie|
+      
+      @cookie_jar && @cookie_jar.cookies(url).each do |cookie|
         cli.cookie_manager.parse(cookie.to_s,url)
       end
 
       length = 0;total = 0
       res = cli.head(url)
       url = URI.parse(res.header["Location"].to_s) if res.status == 302
+
       total = cli.head(url).header["Content-Length"].to_s.to_i
       t = Thread.new {
         conn = cli.get_async(url)

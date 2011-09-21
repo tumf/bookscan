@@ -13,7 +13,7 @@ module Bookscan
         column :style => :green
         column :width => 100
       end
-      
+
       each do |b|
         table << [b.book_id,b.title_short]
       end

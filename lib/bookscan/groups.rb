@@ -36,16 +36,19 @@ module Bookscan
         column
       end
       # table << ["#","Date","num","price","status"]
-      each do |group|
-         table << group.to_a
+
+      sort{ |a,b| a.date <=> b.date}.each do |group|
+        table << group.to_a
       end
       table.to_s if length > 0
     end
 
     def book(book_id)
-      each do |g|
-        return g.books.by_id(book_id) if g.books.has?(book_id)
+      g = find do |g|
+         g.books.has?(book_id)
       end
+      return nil unless g
+      g.books.by_id(book_id)
     end
 
   end

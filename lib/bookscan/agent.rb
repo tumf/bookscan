@@ -136,7 +136,7 @@ module Bookscan
           u.text == "変換"
         book = Book.new
         book.title = u.text.to_s
-        book.url = u.attributes["href"].value.to_s
+        book.url = "/" + u.attributes["href"].value.to_s
         book.group_url = group.url
         bs << book
       end
@@ -152,7 +152,7 @@ module Bookscan
             u.text == "変換"
           book = Book.new
           book.title = u.text.to_s
-          book.url = u.attributes["href"].value.to_s
+          book.url = "/" + u.attributes["href"].value.to_s
           book.group_url = url
           books[book.book_id] = book
         end
@@ -162,19 +162,25 @@ module Bookscan
 
     def download(url,path)
       url = URI.parse(url)
+      url.scheme = "https"
+      url.host = "system.bookscan.co.jp"
+
       cli = HTTPClient.new
-      
-      @cookie_jar && @cookie_jar.cookies(url).each do |cookie|
+      cookie_jar && cookie_jar.cookies(url).each do |cookie|
         cli.cookie_manager.parse(cookie.to_s,url)
       end
 
       length = 0;total = 0
-      res = cli.head(url)
-      url = URI.parse(res.header["Location"].to_s) if res.status == 302
+      res = cli.head(url.to_s)
 
-      total = cli.head(url).header["Content-Length"].to_s.to_i
+      if res.status == 302
+        url = URI.parse(res.header["Location"].to_s)
+        res = cli.head(url.to_s)
+      end
+
+      total = res.header["Content-Length"].to_s.to_i
       t = Thread.new {
-        conn = cli.get_async(url)
+        conn = cli.get_async(url.to_s)
         io = conn.pop.content
         ::File::open(path, "wb") { |f|
           while str = io.read(40)

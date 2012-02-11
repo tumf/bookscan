@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "bookscan"
-  s.version = "0.5.11"
+  s.version = "0.5.12"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Yoshihiro TAKAHARA"]
-  s.date = "2011-09-20"
+  s.date = "2012-02-11"
   s.description = "This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* a official software of Bookscan."
   s.email = "y.takahara@gmail.com"
   s.executables = ["bookscan"]
@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/tumf/bookscan"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.10"
+  s.rubygems_version = "1.8.12"
   s.summary = "BookScan Scraper"
   s.test_files = [
     "test/helper.rb",
@@ -56,6 +56,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<highline>, ["> 1.6"])
       s.add_runtime_dependency(%q<progressbar>, [">= 0.9.0"])
       s.add_runtime_dependency(%q<httpclient>, [">= 2.1.6.1"])
+      s.add_runtime_dependency(%q<rdoc>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
@@ -67,6 +68,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<highline>, ["> 1.6"])
       s.add_dependency(%q<progressbar>, [">= 0.9.0"])
       s.add_dependency(%q<httpclient>, [">= 2.1.6.1"])
+      s.add_dependency(%q<rdoc>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
@@ -79,6 +81,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<highline>, ["> 1.6"])
     s.add_dependency(%q<progressbar>, [">= 0.9.0"])
     s.add_dependency(%q<httpclient>, [">= 2.1.6.1"])
+    s.add_dependency(%q<rdoc>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])

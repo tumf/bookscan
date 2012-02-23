@@ -42,4 +42,4 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 
 Copyright (c) 2011 Yoshihiro TAKAHARA. See LICENSE.txt for further details.
 
-{<img src="http://api.coderwall.com/tumf/endorsecount.png" />}[http://coderwall.com/tumf]
+{<img src="http://api.coderwall.com/tumf/endorsecount.png" target="_blank"/>}[http://coderwall.com/tumf]

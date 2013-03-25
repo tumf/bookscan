@@ -16,7 +16,9 @@ module Bookscan
       else
         @status = "未完了"
       end
-      [@hash,@date,@num,@price,@payment,@status]
+      [@hash,@date,@num,@price,@payment,@status].collect { |i| 
+        i.force_encoding("utf-8") if i.respond_to?(:force_encoding) 
+      }
     end
 
     def url

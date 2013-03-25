@@ -20,6 +20,13 @@ module Bookscan
       get(BSURL + path)
     end
     
+
+    def page_body enc='utf-8'
+      body = page.body
+      body.force_encoding(enc) if body.respond_to?(:force_encoding)
+      body
+    end
+
     def login id,password
       getr("/login.php")
       form = page.forms[0]
@@ -30,7 +37,7 @@ module Bookscan
 
     def login?
       getr("/mypage.php")
-      /さんのおかげです/ =~ page.body # => OK
+      /さんのおかげです/ =~ page_body # => OK
     end
 
     def logout

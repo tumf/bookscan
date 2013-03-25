@@ -8,6 +8,7 @@ gem 'mechanize', '>= 2.0.1'
 gem 'highline', '> 1.6'
 gem 'progressbar', '>= 0.9.0'
 gem 'httpclient', '>= 2.1.6.1'
+gem 'rdoc'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.

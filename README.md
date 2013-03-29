@@ -47,5 +47,5 @@ Copyright
 
 Copyright (c) 2011-2013 Yoshihiro TAKAHARA. See LICENSE.txt for further details.
 
-![http://coderwall.com/tumf](http://api.coderwall.com/tumf/endorsecount.png)/>
+![http://coderwall.com/tumf](http://api.coderwall.com/tumf/endorsecount.png)
 

@@ -1,22 +1,25 @@
-= bookscan
+bookscan
+========
 
 This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* a official software of Bookscan.
 
-== Install
+Install
+-------
 
- sudo gem install bookscan
+    gem install bookscan
  
-== Usage
+Usage
+-----
 
- bookscan [global options] command [command options]
+    bookscan [global options] command [command options]
 
-=== GlobalOptions
+### GlobalOptions
 
 * --debug
 * --help
 * --version
 
-=== Commands
+### Commands
 
 * help [command]
 * login
@@ -28,7 +31,8 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 * tuning
 * groups
 
-== Contributing to bookscan
+Contributing to bookscan
+-------------------------
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
@@ -38,8 +42,10 @@ This is a scraper of Bookscan (http://www.bookscan.co.jp) Service.This is *NOT* 
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
-== Copyright
+Copyright
+---------
 
-Copyright (c) 2011 Yoshihiro TAKAHARA. See LICENSE.txt for further details.
+Copyright (c) 2011-2013 Yoshihiro TAKAHARA. See LICENSE.txt for further details.
 
-{<img src="http://api.coderwall.com/tumf/endorsecount.png"/>}[http://coderwall.com/tumf]
+![http://coderwall.com/tumf](http://api.coderwall.com/tumf/endorsecount.png)/>
+
